@@ -2,7 +2,7 @@
   "name": "ohpack-webpack-plugin",
   "version": "1.0.0",
   "main": "index.js",
-  "description": "Collection of plugins and loaders for Webpack which brings better log overviews, 1:1 compilation (file emitting), alternative jade and stylus loaders, etc.",
+  "description": "Collection of plugins and loaders for Webpack which brings better log overviews, 1:1 compilation (file emitting), alternative pug and stylus loaders, etc.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ohlabs/ohpack-webpack-plugin.git"
@@ -24,7 +24,7 @@
     "webpack-sources": "^0.1.2"
   },
   "peerDependencies": {
-    "jade": "^1.11.0",
+    "pug": "^2.x",
     "stylus": "^0.54.5",
     "webpack": "^1.13.0"
   }

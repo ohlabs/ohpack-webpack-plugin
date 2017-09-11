@@ -18,7 +18,7 @@ const plugins = {
 const loaders = {
   stylus: require.resolve('./loaders/stylus'),
   asset: require.resolve('./loaders/asset'),
-  jade: require.resolve('./loaders/jade'),
+  pug: require.resolve('./loaders/pug')
 };
 
 /**
@@ -29,7 +29,7 @@ const defaults = {
   logger: true,
   asset: true,
   stylus: false,
-  jade: false,
+  pug: false
 };
 
 /**
@@ -52,8 +52,8 @@ let cache = {};
 class OhPack {
   constructor(conf) {
     this.conf = isO(conf)
-    ? merge({}, defaults, conf)
-    : merge({}, defaults);
+      ? merge({}, defaults, conf)
+      : merge({}, defaults);
   }
 
   /**
@@ -68,12 +68,12 @@ class OhPack {
         return entry[key];
       } else if (/\.(styl|stylus)$/.test(entry[key]) && this.conf.stylus) {
         entry[key] = `${loaders.stylus}!${entry[key]}`;
-      } else if (/\.(jade|pug)$/.test(entry[key]) && this.conf.jade) {
-        entry[key] = `${loaders.jade}!${entry[key]}`;
+      } else if (/\.(jade|pug)$/.test(entry[key]) && this.conf.pug) {
+        entry[key] = `${loaders.pug}!${entry[key]}`;
       }
       entry[key] = (this.conf.asset
-      ? (`${loaders.asset}?entry=${key}!`)
-      : '') + entry[key];
+        ? (`${loaders.asset}?entry=${key}!`)
+        : '') + entry[key];
     });
 
     // EXPREIMENTAL - MIGHT REMOVE NEEDED EMITS
@@ -83,15 +83,15 @@ class OhPack {
 
     compiler.plugin('emit', (compilation, cb) => {
       const newcache = Object
-      .keys(compilation.records.chunks.byName)
-      .reduce((object, name) => {
-        const id = `c${compilation.records.chunks.byName[name]}`;
-        object[name] = {
-          id,
-          hash: compilation.cache[id].hash,
-        };
-        return object;
-      }, {});
+        .keys(compilation.records.chunks.byName)
+        .reduce((object, name) => {
+          const id = `c${compilation.records.chunks.byName[name]}`;
+          object[name] = {
+            id,
+            hash: compilation.cache[id].hash,
+          };
+          return object;
+        }, {});
       Object.keys(newcache).forEach((name) => {
         if (!cache[name]) return;
         if (cache[name].id !== newcache[name].id) return;
@@ -113,12 +113,16 @@ class OhPack {
     if (argv.p) {
       options.devtool = false;
       new wp.DefinePlugin({
-        'process.env': { NODE_ENV: '"production"' },
+        'process.env': {
+          NODE_ENV: '"production"'
+        },
       }).apply(compiler);
     } else {
       options.devtool = 'inline-source-map';
       new wp.DefinePlugin({
-        'process.env': { NODE_ENV: '"development"' },
+        'process.env': {
+          NODE_ENV: '"development"'
+        },
       }).apply(compiler);
     }
   }

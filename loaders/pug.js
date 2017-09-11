@@ -1,31 +1,31 @@
 const utils = require('loader-utils');
 const merge = require('lodash/merge');
-const jade = require('jade');
+const pug = require('pug');
 
 /**
  * The main loader entry point
- * @param  {buffer|string} content - Raw Jade content
+ * @param  {buffer|string} content - Raw Pug content
  * @return {string}        Rendered HTML string
  */
-module.exports = function OhPackJadeLoader(content) {
+module.exports = function OhPackPugLoader(content) {
   this.cacheable && this.cacheable(true);
   const resource = this.resourcePath;
   const defaults = {
     configure: c => c,
     pretty: this.minimize ? false : true,
   };
-  let config = merge(defaults, utils.getLoaderConfig(this, 'jade'));
+  let config = merge(defaults, utils.getLoaderConfig(this, 'pug'));
   config.filename = resource;
   config = config.configure(config);
 
-  const temp = jade.compileClientWithDependenciesTracked(content, config);
+  const temp = pug.compileClientWithDependenciesTracked(content, config);
   const deps = temp.dependencies;
 
   deps
-  .filter((f, i) => deps.lastIndexOf(f) === i)
-  .forEach(dep => this.addDependency(dep));
+    .filter((f, i) => deps.lastIndexOf(f) === i)
+    .forEach(dep => this.addDependency(dep));
 
-  return jade.render(content, config);
+  return pug.render(content, config);
 };
 
 /**
