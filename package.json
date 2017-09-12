@@ -24,7 +24,8 @@
     "webpack-sources": "^0.1.2"
   },
   "peerDependencies": {
-    "pug": "^2.x",
+    "jade": "^1.11.0",
+    "pug": "^2.0.0-rc.4",
     "stylus": "^0.54.5",
     "webpack": "^1.13.0"
   }

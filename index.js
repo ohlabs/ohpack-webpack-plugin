@@ -15,9 +15,11 @@ const plugins = {
  * OhPack loaders
  * @const {object} loaders
  */
+// jade key remains the same due to backward compatibility (older projects)
 const loaders = {
   stylus: require.resolve('./loaders/stylus'),
   asset: require.resolve('./loaders/asset'),
+  jade: require.resolve('./loaders/jade'),
   pug: require.resolve('./loaders/pug')
 };
 
@@ -29,6 +31,7 @@ const defaults = {
   logger: true,
   asset: true,
   stylus: false,
+  jade: false,
   pug: false
 };
 
@@ -68,7 +71,9 @@ class OhPack {
         return entry[key];
       } else if (/\.(styl|stylus)$/.test(entry[key]) && this.conf.stylus) {
         entry[key] = `${loaders.stylus}!${entry[key]}`;
-      } else if (/\.(jade|pug)$/.test(entry[key]) && this.conf.pug) {
+      } else if (/\.jade$/.test(entry[key]) && this.conf.jade) {
+        entry[key] = `${loaders.jade}!${entry[key]}`;
+      } else if (/\.pug$/.test(entry[key]) && this.conf.pug) {
         entry[key] = `${loaders.pug}!${entry[key]}`;
       }
       entry[key] = (this.conf.asset
